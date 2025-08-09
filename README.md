@@ -65,12 +65,13 @@ ml-pipeline-speedrun/
 - [x] Create FastAPI application
 - [x] Add prediction endpoints
 
-### 🚧 1:00-1:30 | Deployment
+### ✅ 1:00-1:30 | Deployment & Serving
 - [x] FastAPI with health checks
 - [x] Model metadata endpoint
+- [x] Single and batch prediction endpoints
+- [x] Test API with curl commands
 - [ ] Write Dockerfile
 - [ ] Build container image
-- [ ] Test containerized app locally
 
 ### 1:30-2:00 | Serving & Monitoring
 - [ ] Run production server
@@ -150,7 +151,7 @@ curl -X POST "http://localhost:8000/predict" \
     "proanthocyanins": 1.28,
     "color_intensity": 4.38,
     "hue": 1.05,
-    "od280_od315_of_diluted_wines": 3.4,
+    "od280_od315": 3.4,
     "proline": 1050
   }'
 ```
@@ -182,7 +183,9 @@ docker run -p 8000:8000 wine-predictor
 - Sklearn wine dataset has different feature names than UCI dataset
 - JSON serialization issues with numpy types (fixed in code)
 - Remember to match feature engineering in serving code
+- API field name `od280_od315` (simplified from `od280/od315_of_diluted_wines` for JSON compatibility)
 - API expects all 13 original features for prediction
+- Model achieves 100% accuracy on test set (might indicate overfitting on small dataset)
 
 ## 🔄 Future Improvements
 - [ ] Add A/B testing capability
@@ -204,4 +207,4 @@ docker run -p 8000:8000 wine-predictor
 ---
 *Remember: The goal isn't perfection in 2 hours - it's understanding the complete pipeline. Each component can be a deep rabbit hole for future exploration!*
 
-**Status**: 75% complete - Dockerization remaining
+**Status**: 85% complete - Only Dockerization remaining!
