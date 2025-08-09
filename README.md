@@ -24,50 +24,50 @@ ml-pipeline-speedrun/
 ├── data/
 │   ├── raw/              # Original data
 │   └── processed/        # Cleaned, feature-engineered
+├── figures/              # EDA visualizations
 ├── notebooks/
 │   └── exploration.ipynb # Quick EDA
 ├── src/
-│   ├── data_prep.py      # Data pipeline
-│   ├── train.py          # Model training
-│   └── serve.py          # FastAPI app
+│   ├── data_prep.py      # Data pipeline ✅
+│   ├── train.py          # Model training ✅
+│   └── serve.py          # FastAPI app ✅
 ├── models/
 │   └── artifacts/        # Saved models
-├── mlruns/               # MLflow experiments
+├── mlruns/               # MLflow experiments (gitignored)
 ├── Dockerfile
-├── requirements.txt
+├── requirements.txt      ✅
 └── README.md
 ```
 
 ## ⏱️ Timeline & Tasks
 
-### 0:00-0:20 | Data Preparation
-- [ ] Load wine quality dataset from UCI/sklearn
-- [ ] Exploratory analysis (distributions, correlations)
-- [ ] Handle missing values, outliers
-- [ ] Feature engineering (polynomial features, scaling)
-- [ ] Create reproducible train/test split
-- [ ] Save processed data with versioning
+### ✅ 0:00-0:20 | Data Preparation
+- [x] Load wine quality dataset from sklearn
+- [x] Exploratory analysis (distributions, correlations)
+- [x] Handle missing values, outliers
+- [x] Feature engineering (6 new features created)
+- [x] Create reproducible train/test split
+- [x] Save processed data with metadata
 
-### 0:20-0:40 | Model Training
-- [ ] Baseline model (Logistic Regression)
-- [ ] Advanced model (Random Forest/XGBoost)
-- [ ] Hyperparameter tuning (quick GridSearch)
-- [ ] Cross-validation
-- [ ] Log all experiments with MLflow
-- [ ] Compare model performances
+### ✅ 0:20-0:40 | Model Training
+- [x] Baseline model (Logistic Regression)
+- [x] Advanced model (Random Forest with GridSearchCV)
+- [x] XGBoost model with early stopping
+- [x] Cross-validation
+- [x] Log all experiments with MLflow
+- [x] Compare model performances
 
-### 0:40-1:00 | Model Versioning
-- [ ] Set up MLflow tracking server
-- [ ] Log models, parameters, metrics
-- [ ] Create model registry
-- [ ] Initialize DVC for data versioning
-- [ ] Tag best model for production
-- [ ] Document model lineage
+### ✅ 0:40-1:00 | Model Versioning & API
+- [x] Set up MLflow tracking server
+- [x] Log models, parameters, metrics
+- [x] Track feature importance
+- [x] Select and save best model
+- [x] Create FastAPI application
+- [x] Add prediction endpoints
 
-### 1:00-1:30 | Deployment
-- [ ] Create FastAPI application
-- [ ] Add prediction endpoint
-- [ ] Add model metadata endpoint
+### 🚧 1:00-1:30 | Deployment
+- [x] FastAPI with health checks
+- [x] Model metadata endpoint
 - [ ] Write Dockerfile
 - [ ] Build container image
 - [ ] Test containerized app locally
@@ -76,60 +76,132 @@ ml-pipeline-speedrun/
 - [ ] Run production server
 - [ ] Create simple web UI for predictions
 - [ ] Add basic monitoring (latency, requests)
-- [ ] Test with sample requests
-- [ ] Document API with Swagger
-- [ ] Push everything to GitHub
+- [x] Test with sample requests
+- [x] Document API with Swagger
+- [x] Push everything to GitHub
 
 ## 🛠️ Tech Stack
 - **Data**: pandas, numpy, scikit-learn
 - **Training**: XGBoost, scikit-learn
-- **Tracking**: MLflow, DVC
+- **Tracking**: MLflow ~~, DVC~~ (skipped for time)
 - **API**: FastAPI, pydantic
 - **Deployment**: Docker, uvicorn
-- **Monitoring**: Basic logging, prometheus (optional)
+- **Monitoring**: Basic logging ~~, prometheus~~ (optional)
 
-## 📊 Success Metrics
-- ✅ Complete pipeline runs end-to-end
-- ✅ Model achieves >85% accuracy
-- ✅ API responds <100ms
-- ✅ All code committed to GitHub
-- ✅ Can reproduce results from scratch
+## 📊 Results & Metrics
+- **Dataset**: 178 samples, 13 original features + 6 engineered features
+- **Best Model**: Check MLflow UI for latest results
+- **API Performance**: <100ms response time ✅
+- **Endpoints**: `/health`, `/model/info`, `/predict`, `/predict/batch`
 
 ## 🚀 Quick Start Commands
+
+### Setup
 ```bash
 # Clone and setup
-git clone <your-repo>
+git clone https://github.com/y-c/ml-pipeline-speedrun.git
 cd ml-pipeline-speedrun
-pip install -r requirements.txt
 
-# Run pipeline
-python src/data_prep.py
-python src/train.py
-mlflow ui  # View experiments
+# Create virtual environment (recommended)
+python3 -m venv venv
+source venv/bin/activate  # On Windows: venv\Scripts\activate
 
-# Deploy
-docker build -t wine-predictor .
-docker run -p 8000:8000 wine-predictor
-
-# Test
-curl -X POST http://localhost:8000/predict -d '{...}'
+# Install dependencies
+pip3 install -r requirements.txt
 ```
 
-## 📝 Key Learnings to Document
-1. Why is data versioning different from code versioning?
-2. How does MLflow differ from traditional logging?
-3. What makes ML deployment unique?
-4. How to ensure reproducibility?
+### Run the Pipeline
+```bash
+# 1. Data preparation
+python3 src/data_prep.py
+
+# 2. Model training
+python3 src/train.py
+
+# 3. View experiments (separate terminal)
+python3 -m mlflow ui
+# Open http://127.0.0.1:5000 to see experiments
+
+# 4. Serve API
+python3 src/serve.py
+# Open http://localhost:8000/docs for API documentation
+```
+
+### Make Predictions
+```bash
+# Health check
+curl http://localhost:8000/health
+
+# Model info
+curl http://localhost:8000/model/info
+
+# Single prediction
+curl -X POST "http://localhost:8000/predict" \
+  -H "Content-Type: application/json" \
+  -d '{
+    "alcohol": 13.2,
+    "malic_acid": 1.78,
+    "ash": 2.14,
+    "alcalinity_of_ash": 11.2,
+    "magnesium": 100,
+    "total_phenols": 2.65,
+    "flavanoids": 2.76,
+    "nonflavanoid_phenols": 0.26,
+    "proanthocyanins": 1.28,
+    "color_intensity": 4.38,
+    "hue": 1.05,
+    "od280_od315_of_diluted_wines": 3.4,
+    "proline": 1050
+  }'
+```
+
+### Docker (Coming Soon)
+```bash
+# Build
+docker build -t wine-predictor .
+
+# Run
+docker run -p 8000:8000 wine-predictor
+```
+
+## 📝 Key Learnings
+1. **Data versioning vs code versioning**: Data changes affect model performance, need tracking
+2. **MLflow benefits**: Automatic experiment tracking, model comparison, artifact storage
+3. **ML deployment challenges**: Feature engineering consistency, model versioning, API design
+4. **Reproducibility**: Random seeds, data splits, dependency management are crucial
+
+## 🔍 Interesting Findings
+- Using sklearn wine dataset (different from UCI wine quality dataset)
+- Feature engineering improved model performance significantly
+- XGBoost and Random Forest outperformed Logistic Regression
+- MLflow UI makes experiment comparison much easier
+- FastAPI auto-generates interactive API documentation
+
+## 📌 Notes & Gotchas
+- Use `python3 -m mlflow ui` if mlflow command not found
+- Sklearn wine dataset has different feature names than UCI dataset
+- JSON serialization issues with numpy types (fixed in code)
+- Remember to match feature engineering in serving code
+- API expects all 13 original features for prediction
 
 ## 🔄 Future Improvements
-- Add A/B testing capability
-- Implement model retraining pipeline
-- Add data drift detection
-- Scale with Kubernetes
-- Add GPU support
+- [ ] Add A/B testing capability
+- [ ] Implement model retraining pipeline
+- [ ] Add data drift detection
+- [ ] Scale with Kubernetes
+- [ ] Add GPU support
+- [ ] Implement proper monitoring/alerting
+- [ ] Add DVC for data versioning
+- [ ] Create web UI for easier predictions
+- [ ] Add model explainability (SHAP/LIME)
 
 ## 📚 Resources
 - [MLflow Documentation](https://mlflow.org/docs/latest/index.html)
 - [DVC Documentation](https://dvc.org/doc)
 - [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)
 - [Docker for Data Scientists](https://docker-curriculum.com/)
+
+---
+*Remember: The goal isn't perfection in 2 hours - it's understanding the complete pipeline. Each component can be a deep rabbit hole for future exploration!*
+
+**Status**: 75% complete - Dockerization remaining
