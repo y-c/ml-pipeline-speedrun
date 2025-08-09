@@ -219,6 +219,7 @@ docker stop wine-api
 - [DVC Documentation](https://dvc.org/doc)
 - [FastAPI Tutorial](https://fastapi.tiangolo.com/tutorial/)
 - [Docker for Data Scientists](https://docker-curriculum.com/)
+- **[📖 MLflow Guide for this Project](docs/mlflow-guide.md)** - Detailed explanation of MLflow usage
 
 ---
 *Remember: The goal isn't perfection in 2 hours - it's understanding the complete pipeline. Each component can be a deep rabbit hole for future exploration!*
