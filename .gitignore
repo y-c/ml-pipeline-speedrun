@@ -1,0 +1,15 @@
+mlruns/
+*.pyc
+__pycache__/
+.env
+.DS_Store
+data/raw/*
+!data/raw/.gitkeep
+data/processed/*
+!data/processed/.gitkeep
+models/artifacts/*
+!models/artifacts/.gitkeep
+*.log
+.ipynb_checkpoints/
+.vscode/
+.idea/
