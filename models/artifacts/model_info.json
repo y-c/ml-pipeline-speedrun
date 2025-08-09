@@ -1,0 +1,30 @@
+{
+  "model_type": "Random Forest",
+  "metrics": {
+    "accuracy": 1.0,
+    "precision": 1.0,
+    "recall": 1.0,
+    "f1": 1.0
+  },
+  "feature_names": [
+    "alcohol",
+    "malic_acid",
+    "ash",
+    "alcalinity_of_ash",
+    "magnesium",
+    "total_phenols",
+    "flavanoids",
+    "nonflavanoid_phenols",
+    "proanthocyanins",
+    "color_intensity",
+    "hue",
+    "od280/od315_of_diluted_wines",
+    "proline",
+    "alcohol_squared",
+    "phenols_flavanoids_ratio",
+    "color_hue_interaction",
+    "proline_log",
+    "magnesium_scaled"
+  ],
+  "training_date": "2025-08-09T13:40:37.530620"
+}
