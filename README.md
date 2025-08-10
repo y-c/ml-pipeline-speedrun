@@ -4,6 +4,45 @@
 **Time Budget**: 2 hours  
 **Goal**: Learn the complete ML pipeline by building a wine quality predictor
 
+## 🏗️ Pipeline Architecture
+
+```mermaid
+flowchart LR
+    subgraph "📊 Data Pipeline"
+        A[Wine Dataset] --> B[data_prep.py]
+        B --> C[Feature Engineering]
+        C --> D[(Processed Data)]
+    end
+    
+    subgraph "🤖 Training Pipeline"
+        D --> E[train.py]
+        E --> F{Model Selection}
+        F --> G[Logistic Regression]
+        F --> H[Random Forest]
+        F --> I[XGBoost]
+        G --> J[MLflow Tracking]
+        H --> J
+        I --> J
+        J --> K[(Best Model)]
+    end
+    
+    subgraph "🚀 Serving Pipeline"
+        K --> L[serve.py]
+        L --> M[FastAPI Server]
+        M --> N[REST Endpoints]
+    end
+    
+    subgraph "📦 Deployment"
+        N --> O[Docker Build]
+        O --> P[Container Image]
+        P --> Q[Production Ready]
+    end
+    
+    style A fill:#e3f2fd
+    style K fill:#c8e6c9
+    style Q fill:#ffeb3b
+```
+
 ## 🎯 Learning Objectives Achieved
 - ✅ End-to-end ML workflow implementation
 - ✅ MLOps tools experience (MLflow, Docker, FastAPI)
@@ -11,6 +50,30 @@
 - ✅ Learned ML-specific versioning with MLflow
 
 ## 🏗️ Architecture Overview
+
+### Pipeline Flow Diagram
+```mermaid
+graph LR
+    A[📊 Raw Data] --> B[Data Prep<br/>data_prep.py]
+    B --> C[(Processed Data<br/>scaler.pkl<br/>metadata.json)]
+    C --> D[Model Training<br/>train.py]
+    D --> E[MLflow<br/>Tracking]
+    E --> F[(Best Model<br/>model.pkl<br/>model_info.json)]
+    F --> G[API Serving<br/>serve.py]
+    G --> H[FastAPI<br/>:8000]
+    H --> I[Docker<br/>Container]
+    I --> J[🌐 Production]
+    
+    D -.-> K[Experiments<br/>Dashboard]
+    K -.-> D
+    
+    style A fill:#f9f,stroke:#333,stroke-width:2px
+    style J fill:#9f9,stroke:#333,stroke-width:2px
+    style E fill:#bbf,stroke:#333,stroke-width:2px
+    style H fill:#fbf,stroke:#333,stroke-width:2px
+```
+
+### Component Details
 ```
 Data → Preprocessing → Training → Versioning → Deployment → Serving
  ↓         ↓              ↓           ↓            ↓           ↓
